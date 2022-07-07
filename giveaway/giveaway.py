@@ -87,7 +87,7 @@ class GiveawayPlugin(commands.Cog):
                 if len(message.reactions) <= 0:
                     embed = message.embeds[0]
                     embed.description = (
-                        f"Giveaway has ended!\n\nSadly no one participated :("
+                        f"No valid entrants so a winner could not be determined"
                     )
                     embed.set_footer(
                         text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | Ended at"
@@ -110,7 +110,7 @@ class GiveawayPlugin(commands.Cog):
                         if len(reacted_users) <= 1:
                             embed = message.embeds[0]
                             embed.description = (
-                                f"Giveaway has ended!\n\nSadly no one participated :("
+                                f"No valid entrants so a winner could not be determined"
                             )
                             embed.set_footer(
                                 text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | "
@@ -142,14 +142,14 @@ class GiveawayPlugin(commands.Cog):
                         for winner in winners:
                             winners_text += f"<@{winner}> "
 
-                        embed.description = f"Giveaway has ended!\n\n**{'Winners' if giveaway['winners'] > 1 else 'Winner'}:** {winners_text} "
+                        embed.description = f"Giveaway Ended\n\n**{'Winners' if giveaway['winners'] > 1 else 'Winner'}:** {winners_text} "
                         embed.set_footer(
                             text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | "
-                            f"Ended at"
+                            f"Ended "
                         )
                         await message.edit(embed=embed)
                         await channel.send(
-                            f"🎉 Congratulations {winners_text}, you have won **{giveaway['item']}**!"
+                            f"🎉 Congratulations {winners_text}, you won the **{giveaway['item']}**!"
                         )
                         try:
                             giveaway['ended'] = True
@@ -166,10 +166,10 @@ class GiveawayPlugin(commands.Cog):
             else:
 
                 time_remaining = f"{math.floor(g_time // 86400)} Days, {math.floor(g_time // 3600 % 24)} Hours, {math.floor(g_time // 60 % 60)} Minutes, {math.floor(g_time % 60)} Seconds "
-                description =  f"React with 🎉 to enter the giveaway!\nTime Remaining: **{time_remaining}**"
+                description =  f"React with 🎉 to enter!\nTime Remaining: **{time_remaining}**"
 
                 if giveaway['role'] is not None:
-                    description = description + f"\nMust have role: <@&{giveaway['role']}>"
+                    description = description + f"\nMust have the role <@&{giveaway['role']}>"
 
                 embed = message.embeds[0]
                 embed.description = description
@@ -194,7 +194,7 @@ class GiveawayPlugin(commands.Cog):
             if role is not None and member not in role.members:
                 try:
                     await reaction.remove(user=user)
-                    await user.send(f"You do not have role **{role.name}**. So you can't participate in the giveaway. ")
+                    await user.send(f"You do not have role **{role.name}**. So you can't participate in [this](<{msg.jump_url}>) giveaway.\n\nDo not reply to this. ")
                 except:
                     pass
 
@@ -315,7 +315,7 @@ class GiveawayPlugin(commands.Cog):
         description = f"React with 🎉 to enter the giveaway!\n\n"
         description = description+ f"Time Remaining: **{datetime.fromtimestamp(giveaway_time).strftime('%d %H:%M:%S')}**"
         if giveaway_role is not None:
-            description = description + f"\nMust have role: <@&{giveaway_role.id}>"
+            description = description + f"\nMust have the role <@&{giveaway_role.id}>"
 
         embed.description = (description)
         embed.set_footer(
@@ -339,7 +339,7 @@ class GiveawayPlugin(commands.Cog):
             giveaway_obj['role'] = None
         
         self.active_giveaways[str(msg.id)] = giveaway_obj
-        await ctx.send(f"Done! Giveaway started [here](<{msg.jump_url}>)")
+        await ctx.send(f"Done! Giveaway started\n\n[<{msg.jump_url}>")
         await self._update_db()
         await self._start_new_giveaway_thread(giveaway_obj)
 
@@ -399,7 +399,7 @@ class GiveawayPlugin(commands.Cog):
                 if len(reacted_users) <= 1:
                     embed = message.embeds[0]
                     embed.description = (
-                        f"Giveaway has ended!\n\nSadly no one participated :("
+                        f"No valid entrants so a winner could not be determined"
                     )
                     await message.edit(embed=embed)
                     del reacted_users, embed
@@ -422,13 +422,13 @@ class GiveawayPlugin(commands.Cog):
                 for winner in winners:
                     winners_text += f"<@{winner}> "
 
-                embed.description = f"Giveaway has ended!\n\n**{'Winners' if winners_count > 1 else 'Winner'}:** {winners_text}"
+                embed.description = f"Giveaway Ended\n\n**{'Winners' if winners_count > 1 else 'Winner'}:** {winners_text}"
                 embed.set_footer(
                     text=f"{winners_count} {'winners' if winners_count > 1 else 'winner'} | Ended at"
                 )
                 await message.edit(embed=embed)
                 await ctx.channel.send(
-                    f"🎉 Congratulations {winners_text}, you have won **{embed.title}**!"
+                    f"🎉 Congratulations {winners_text}, you won the **{embed.title}**!"
                 )
                 del winners_text, winners, winners_count, reacted_users, embed
                 break
@@ -465,7 +465,7 @@ class GiveawayPlugin(commands.Cog):
             return
 
         embed = message.embeds[0]
-        embed.description = "The giveaway has been cancelled."
+        embed.description = "This giveaway has been cancelled."
         await message.edit(embed=embed)
         self.active_giveaways.pop(_id)
         await self._update_db()
