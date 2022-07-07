@@ -142,7 +142,7 @@ class GiveawayPlugin(commands.Cog):
                         for winner in winners:
                             winners_text += f"<@{winner}> "
 
-                        embed.description = f"Giveaway Ended\n\n**{'Winners' if giveaway['winners'] > 1 else 'Winner'}:** {winners_text} "
+                        embed.description = f"🎉 Giveaway Ended\n\n**{'Winners' if giveaway['winners'] > 1 else 'Winner'}:** {winners_text} "
                         embed.set_footer(
                             text=f"{giveaway['winners']} {'winners' if giveaway['winners'] > 1 else 'winner'} | "
                             f"Ended "
@@ -339,7 +339,7 @@ class GiveawayPlugin(commands.Cog):
             giveaway_obj['role'] = None
         
         self.active_giveaways[str(msg.id)] = giveaway_obj
-        await ctx.send(f"Done! Giveaway started\n\n> <{msg.jump_url}>")
+        await ctx.send(f"The giveaway has been started\n\n> <{msg.jump_url}>")
         await self._update_db()
         await self._start_new_giveaway_thread(giveaway_obj)
 
@@ -422,7 +422,7 @@ class GiveawayPlugin(commands.Cog):
                 for winner in winners:
                     winners_text += f"<@{winner}> "
 
-                embed.description = f"Giveaway Ended\n\n**{'Winners' if winners_count > 1 else 'Winner'}:** {winners_text}"
+                embed.description = f"🎉 Giveaway Ended\n\n**{'Winners' if winners_count > 1 else 'Winner'}:** {winners_text}"
                 embed.set_footer(
                     text=f"{winners_count} {'winners' if winners_count > 1 else 'winner'} | Ended at"
                 )
