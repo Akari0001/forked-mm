@@ -194,7 +194,7 @@ class GiveawayPlugin(commands.Cog):
             if role is not None and member not in role.members:
                 try:
                     await reaction.remove(user=user)
-                    await user.send(f"You do not have role **{role.name}**. So you can't participate in [this](<{msg.jump_url}>) giveaway.\n\nDo not reply to this. ")
+                    await user.send(f"You do not have role **{role.name}**. So you can't participate in the giveaway.\n\nDo not reply to this. ")
                 except:
                     pass
 
@@ -312,7 +312,7 @@ class GiveawayPlugin(commands.Cog):
         if time_cancel is True:
             return
         
-        description = f"React with 🎉 to enter the giveaway!\n\n"
+        description = f"React with 🎉 to enter!\n\n"
         description = description+ f"Time Remaining: **{datetime.fromtimestamp(giveaway_time).strftime('%d %H:%M:%S')}**"
         if giveaway_role is not None:
             description = description + f"\nMust have the role <@&{giveaway_role.id}>"
@@ -339,7 +339,7 @@ class GiveawayPlugin(commands.Cog):
             giveaway_obj['role'] = None
         
         self.active_giveaways[str(msg.id)] = giveaway_obj
-        await ctx.send(f"Done! Giveaway started\n\n[<{msg.jump_url}>")
+        await ctx.send(f"Done! Giveaway started\n\n> <{msg.jump_url}>")
         await self._update_db()
         await self._start_new_giveaway_thread(giveaway_obj)
 
@@ -385,7 +385,7 @@ class GiveawayPlugin(commands.Cog):
 
         if len(message.reactions) <= 0:
             embed = message.embeds[0]
-            embed.description = f"Giveaway has ended!\n\nSadly no one participated :("
+            embed.description = f"Giveaway Ended\n\nNo valid entrants so a winner could not be determined"
             embed.set_footer(
                 text=f"{winners_count} {'winners' if winners_count > 1 else 'winner'} | Ended at"
             )
