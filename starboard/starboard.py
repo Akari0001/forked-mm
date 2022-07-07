@@ -227,7 +227,7 @@ class Starboard(commands.Cog):
                         color=discord.Colour.gold(),
                         description=message.content,
                         timestamp=datetime.utcnow(),
-                        title="Jump to message ►",
+                        title="Jump to message",
                         url=message.jump_url
                     )
                     embed.set_author(
